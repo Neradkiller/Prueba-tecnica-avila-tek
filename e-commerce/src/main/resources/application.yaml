@@ -1,3 +1,55 @@
 spring:
   application:
     name: Non real e-commerce
+  datasource:
+    url: jdbc:postgresql://postgres:5432/ecommerce
+    username: postgres
+    password: 123456789
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: ${SHOW_SQL:false}
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+app:
+  jwt:
+    secret: "mySuperSecretKeyThatIsVeryLongAndSecure1234567890"
+    expiration: 86400000
+  error-handling:
+    include-stacktrace: NEVER
+    include-exception: false
+    include-binding-errors: ALWAYS
+
+management:
+  endpoints:
+    web:
+      base-path: '/actuator'
+      exposure:
+        include: "*"
+  health:
+    show-details: always
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+server:
+  port: 8080
+
+logging:
+  level:
+    com.example.ecommerce: DEBUG
+    com.example.ecommerce.infrastructure.controller.GlobalExceptionHandler: WARN

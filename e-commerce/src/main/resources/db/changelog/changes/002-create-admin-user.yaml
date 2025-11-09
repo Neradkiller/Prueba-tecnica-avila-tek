@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-admin-user
+      author: dev-team
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "admin@ecommerce.com"
+              - column:
+                  name: name
+                  value: "System Administrator"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$FVpDwtvBNZ.ZHFFi7JoRV.srn7tOaRFs9l5oa7ZXUGik8gbLsGqfW" # admin123
+              - column:
+                  name: role
+                  value: "ADMIN"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: created_at
+                  value: now()
+              - column:
+                  name: updated_at
+                  value: now()
