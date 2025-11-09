@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
     private List<User> applyPagination(List<User> users, int page, int size) {
         int start = page * size;
         if (start >= users.size()) {
-            return List.of(); // Página más allá de los datos disponibles
+            return List.of();
         }
 
         int end = Math.min(start + size, users.size());

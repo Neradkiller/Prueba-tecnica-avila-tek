@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/users")
 @Slf4j
@@ -88,7 +90,7 @@ public class UserProfileController {
     ) {}
 
     public record UserResponse(Long id, String email, String name, String role, String status,
-                               java.time.LocalDateTime createdAt, java.time.LocalDateTime updatedAt) {}
+                               LocalDateTime createdAt, LocalDateTime updatedAt) {}
 
     private UserInfo extractAndValidateUserInfo(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
