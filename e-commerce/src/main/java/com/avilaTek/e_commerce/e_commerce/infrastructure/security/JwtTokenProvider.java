@@ -1,8 +1,8 @@
 package com.avilaTek.e_commerce.e_commerce.infrastructure.security;
 
-import com.avilaTek.e_commerce.e_commerce.domain.model.User;
-import com.avilaTek.e_commerce.e_commerce.domain.model.UserRole;
-import com.avilaTek.e_commerce.e_commerce.domain.port.input.UserInfo;
+import com.avilaTek.e_commerce.e_commerce.domain.model.user.User;
+import com.avilaTek.e_commerce.e_commerce.domain.model.user.UserRole;
+import com.avilaTek.e_commerce.e_commerce.domain.port.input.user.UserInfo;
 import com.avilaTek.e_commerce.e_commerce.domain.port.output.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

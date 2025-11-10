@@ -1,7 +1,7 @@
 package com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.mapper;
 
-import com.avilaTek.e_commerce.e_commerce.domain.model.Product;
-import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.ProducEntity;
+import com.avilaTek.e_commerce.e_commerce.domain.model.product.Product;
+import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.product.ProducEntity;
 import org.springframework.stereotype.Component;
 
 @Component

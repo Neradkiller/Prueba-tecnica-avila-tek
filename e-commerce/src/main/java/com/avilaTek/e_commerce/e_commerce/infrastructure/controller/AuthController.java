@@ -1,7 +1,7 @@
 package com.avilaTek.e_commerce.e_commerce.infrastructure.controller;
 
-import com.avilaTek.e_commerce.e_commerce.domain.model.UserRole;
-import com.avilaTek.e_commerce.e_commerce.domain.port.input.AuthService;
+import com.avilaTek.e_commerce.e_commerce.domain.model.user.UserRole;
+import com.avilaTek.e_commerce.e_commerce.domain.port.input.auth.AuthService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

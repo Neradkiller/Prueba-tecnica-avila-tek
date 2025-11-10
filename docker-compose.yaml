@@ -35,8 +35,105 @@ services:
     networks:
       - ecommerce-network
 
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    container_name: elasticsearch-g2
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=123456789
+      - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-s", "-u", "elastic:123456789", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  log-stash:
+    image: docker.elastic.co/logstash/logstash:8.15.1
+    container_name: logstash-g2
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      xpack.monitoring.enabled: "false"
+    volumes:
+      - ./config-docker/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    networks:
+      - ecommerce-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  setup-kibana:
+    image: curlimages/curl:8.4.0
+    container_name: setup-kibana-g2
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+    command: >
+      sh -c '
+        echo "Esperando a Elasticsearch..."
+        sleep 10
+        echo "Configurando la contraseña para el usuario kibana_system..."
+        curl -u elastic:123456789 -X POST "http://elasticsearch:9200/_security/user/kibana_system/_password" -H "Content-Type: application/json" -d "{\"password\": \"P3siUMxmUC7tW3SBDZhx\"}" || exit 1
+        echo "Contraseña configurada."
+      '
+    restart: on-failure
+
+  kibana:
+    image: kibana:8.15.0
+    container_name: kibana-g2
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      ELASTICSEARCH_USERNAME: "kibana_system"
+      ELASTICSEARCH_PASSWORD: "P3siUMxmUC7tW3SBDZhx"
+    volumes:
+      - ./config-docker/kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - ecommerce-network
+    depends_on:
+      setup-kibana:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      interval: 20s
+      timeout: 10s
+      retries: 6
+
+  setup-kibana-dataview:
+    image: curlimages/curl:8.4.0
+    container_name: setup-kibana-dataview-g2
+    depends_on:
+      kibana:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+    command: >
+      sh -c '
+        echo "Waiting for Kibana..."
+        sleep 20
+        echo "Attempting to create data view..."
+        curl -v -w "\n%{http_code}" -X POST "http://kibana:5601/api/data_views/data_view" -H "kbn-xsrf: true" -H "Content-Type: application/json" -u "elastic:123456789" -d \
+        "{\"data_view\":{\"title\":\"logstash-*\",\"name\":\"api e-commerce\",\"timeFieldName\":\"@timestamp\"}}"
+      '
+    restart: on-failure
+
 volumes:
   postgres_data: {}
+  esdata: {}
 
 networks:
   ecommerce-network:

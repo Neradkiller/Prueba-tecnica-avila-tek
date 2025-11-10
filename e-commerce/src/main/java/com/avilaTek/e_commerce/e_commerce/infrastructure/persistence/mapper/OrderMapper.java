@@ -1,9 +1,9 @@
 package com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.mapper;
 
-import com.avilaTek.e_commerce.e_commerce.domain.model.Order;
-import com.avilaTek.e_commerce.e_commerce.domain.model.OrderItem;
-import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.OrderEntity;
-import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.OrderItemEntity;
+import com.avilaTek.e_commerce.e_commerce.domain.model.order.Order;
+import com.avilaTek.e_commerce.e_commerce.domain.model.order.OrderItem;
+import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.order.OrderEntity;
+import com.avilaTek.e_commerce.e_commerce.infrastructure.persistence.entity.order.OrderItemEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
