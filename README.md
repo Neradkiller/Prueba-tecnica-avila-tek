@@ -1,5 +1,34 @@
 # Documentación de la API de E-commerce
 
+## Instrucciones de Ejecución con Docker
+
+Para ejecutar la aplicación utilizando Docker, sigue los siguientes pasos:
+
+1.  **Construir las imágenes de Docker:**
+    Navega al directorio raíz del proyecto donde se encuentra el archivo `docker-compose.yaml` y ejecuta:
+    ```bash
+    docker-compose build
+    ```
+
+2.  **Iniciar los contenedores de Docker:**
+    Una vez que las imágenes se hayan construido, puedes iniciar todos los servicios definidos en `docker-compose.yaml` con:
+    ```bash
+    docker-compose up
+    ```
+    Si deseas ejecutar los contenedores en segundo plano, usa:
+    ```bash
+    docker-compose up -d
+    ```
+
+3.  **Acceder a la aplicación:**
+    La aplicación estará disponible en `http://localhost:8080` (o el puerto configurado en `application.yaml`).
+
+4.  **Detener los contenedores de Docker:**
+    Para detener los servicios y remover los contenedores, redes y volúmenes, ejecuta:
+    ```bash
+    docker-compose down
+    ```
+
 Este documento proporciona una descripción detallada de los endpoints de la API de E-commerce.
 
 ## Autenticación
@@ -553,3 +582,4 @@ Todos los endpoints requieren un Bearer Token en el encabezado `Authorization`.
             }
         ]
         ```
+
